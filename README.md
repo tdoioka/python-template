@@ -1,2 +1,6 @@
-# python-template
+# Python-Template
 Python module template
+
+# License
+
+MIT
