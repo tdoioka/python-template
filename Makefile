@@ -19,6 +19,15 @@ syncinit:
 $(eval $(call helps,syncinit,\
 	"Reproduce the environment using pipenv sync."))
 # ................................................................
+cmds += check
+check:
+	@echo "# flake8 #########################################"
+	-@pipenv run flake8 .
+	@echo "# mypy ###########################################"
+	-@pipenv run mypy .
+.check_help="Check format pep8 format by flake8, and type check by mypy."
+$(eval $(call helps,check,$(.check_help)))
+# ................................................................
 .PHONY: help $(cmds)
 help:
 	@echo
