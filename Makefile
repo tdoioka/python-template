@@ -33,6 +33,12 @@ format:
 	pipenv run black .
 $(eval $(call helps,format,"Corde formating by black."))
 # ................................................................
+cmds += test
+test:
+	@echo "# test ###########################################"
+	pipenv run nosetests -v
+$(eval $(call helps,test,"Run unit test."))
+# ................................................................
 .PHONY: help $(cmds)
 help:
 	@echo
