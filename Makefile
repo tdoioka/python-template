@@ -28,6 +28,11 @@ check:
 .check_help="Check format pep8 format by flake8, and type check by mypy."
 $(eval $(call helps,check,$(.check_help)))
 # ................................................................
+cmds += format
+format:
+	pipenv run black .
+$(eval $(call helps,format,"Corde formating by black."))
+# ................................................................
 .PHONY: help $(cmds)
 help:
 	@echo
