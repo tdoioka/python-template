@@ -3,12 +3,26 @@ MAKEFLAGS += --no-builtin-rules --no-builtin-variables
 
 .DEFAULT_GOAL = help
 
+# $(eval $(call helps,COMMAND,MESSAGES)
+# Add help describe COMMAND.
+# If you want to insert a line break in MESSAGES,
+# separate it with two character strings enclosed in double quotes.
+#
+# eg. $(eval $(call helps,command,"line1" "" "" "line2"))
+#
+#     It is displayed as follows:
+#
+#         command   : line1
+#                     line2
+#
 define helps
   .PHONY: $(1).help help.$(1)
   $(1).help: help.$(1)
   help.$(1):
-	@printf "$(indent)%-10s: %s\n" $(1) $(2)
+	@printf "$(indent)%-10s%1.1s %s\n" $1 : $2
 endef
+# COMMAND list for help and adding to phony target.
+cmds =
 
 # ................................................................
 cmds += syncinit
