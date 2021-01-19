@@ -26,12 +26,19 @@ cmds =
 
 # ................................................................
 cmds += syncinit
-syncinit:
+.pipenvinit:
 	pipenv --python 3.8
 	pipenv run python -m pip install --upgrade pip
+syncinit: .pipenvinit
 	pipenv sync --dev
 $(eval $(call helps,syncinit,\
-	"Reproduce the environment using pipenv sync."))
+	"Reproduce the environment by using \`pipenv sync'."))
+# ................................................................
+cmds += init
+init: .pipenvinit
+	pipenv install --dev --pre
+$(eval $(call helps,init,\
+	"Reproduce the environment by using \`pipenv install'."))
 # ................................................................
 cmds += check
 check:
