@@ -51,6 +51,7 @@ $(eval $(call helps,check,$(.check_help)))
 # ................................................................
 cmds += format
 format:
+	pipenv run isort .
 	pipenv run black .
 $(eval $(call helps,format,"Corde formating by black."))
 # ................................................................
