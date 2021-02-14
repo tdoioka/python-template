@@ -27,27 +27,33 @@ Python module template
   Use this command when the environment created by `make init` does not work.
 
   ```shell
-  $ make syncinit
+  make syncinit
   ```
 
-## Usage development tool
+## Usage of evelopment tool
 
 Run unit test:
 
   ```shell
-  $ make test
+  make test
   ```
 
-Code format check and type-check:
+Format check and type-check:
 
   ```shell
-  $ make check
+  make check
   ```
 
 Code formatting by black:
 
   ```shell
-  $ make format
+  make format
+  ```
+
+Generate or update document by sphinx:
+
+  ```shell
+  make gendoc
   ```
 
 # License

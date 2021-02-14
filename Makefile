@@ -3,6 +3,8 @@ MAKEFLAGS += --no-builtin-rules --no-builtin-variables
 
 .DEFAULT_GOAL = help
 
+.DOCS = docs
+
 # $(eval $(call helps,COMMAND,MESSAGES)
 # Add help describe COMMAND.
 # If you want to insert a line break in MESSAGES,
@@ -54,6 +56,25 @@ test:
 	@echo "# test ###########################################"
 	pipenv run nosetests -v
 $(eval $(call helps,test,"Run unit test."))
+# ................................................................
+.module = `pipenv run python3 setup.py --name`
+.author = `pipenv run python3 setup.py --author`
+.pwd    != pwd
+$(.DOCS):
+	pipenv run sphinx-apidoc -F \
+		--extensions sphinx.ext.napoleon \
+		-A $(.author) -o $(.DOCS) $(.module)
+	sed -i \
+		-e "s|^# \(sys\.path.*\)'.*'\(.*\)|\1os.path.abspath(\"..\")\2|g" \
+		-e "s@^# import \(os\|sys\)@import \1@g" \
+		-e "s@^html_theme = 'alabaster'@html_theme = 'sphinx_rtd_theme'@g" \
+		$(.DOCS)/conf.py
+
+gendoc:| $(.DOCS)
+	pipenv run sphinx-apidoc -f -o $(.DOCS) $(.module)
+	pipenv run sphinx-build -a $(.DOCS) $(.DOCS)/_build
+.gendoc_help="Generate or update document from pydoc by sphinx."
+$(eval $(call helps,gendoc,$(.gendoc_help)))
 # ................................................................
 .PHONY: help
 help:
