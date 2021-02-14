@@ -16,16 +16,14 @@ MAKEFLAGS += --no-builtin-rules --no-builtin-variables
 #                     line2
 #
 define helps
-  .PHONY: $(1).help help.$(1)
+  cmds += $(1)
+  .PHONY: $(1).help help.$(1) $(1)
   $(1).help: help.$(1)
   help.$(1):
 	@printf "$(indent)%-10s%1.1s %s\n" $1 : $2
 endef
-# COMMAND list for help and adding to phony target.
-cmds =
 
 # ................................................................
-cmds += syncinit
 .pipenvinit:
 	pipenv --python 3.8
 	pipenv run python -m pip install --upgrade pip
@@ -34,13 +32,11 @@ syncinit: .pipenvinit
 $(eval $(call helps,syncinit,\
 	"Reproduce the environment by using \`pipenv sync'."))
 # ................................................................
-cmds += init
 init: .pipenvinit
 	pipenv install --dev --pre
 $(eval $(call helps,init,\
 	"Reproduce the environment by using \`pipenv install'."))
 # ................................................................
-cmds += check
 check:
 	@echo "# flake8 #########################################"
 	-@pipenv run flake8 .
@@ -49,19 +45,17 @@ check:
 .check_help="Check format pep8 format by flake8, and type check by mypy."
 $(eval $(call helps,check,$(.check_help)))
 # ................................................................
-cmds += format
 format:
 	pipenv run isort .
 	pipenv run black .
 $(eval $(call helps,format,"Corde formating by black."))
 # ................................................................
-cmds += test
 test:
 	@echo "# test ###########################################"
 	pipenv run nosetests -v
 $(eval $(call helps,test,"Run unit test."))
 # ................................................................
-.PHONY: help $(cmds)
+.PHONY: help
 help:
 	@echo
 	@echo "The following commands are supported this Makefile:"
