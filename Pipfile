@@ -12,6 +12,7 @@ flake8 = "*"
 black = "*"
 isort = "*"
 sphinx = "*"
+sphinx-rtd-theme = "*"
 
 [requires]
 python_version = "3.8"
